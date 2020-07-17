@@ -1,0 +1,212 @@
+﻿@model TSMbank.ViewModels.CheckingAccApplicationViewModel
+@using TSMbank.Models;
+@{
+    ViewBag.Title = "CurrentAccount";
+}
+<h2>Checkings Account</h2>
+<style></style>
+<div>
+    <section class="indent-1">
+        <!-- Section 1 -->
+        <section>
+            <h2>Basic</h2>
+            <div id="basic1" class="jumbotron u-margin-top-small">
+                <h4>Checking Basic</h4>
+                <p>
+                    A checking account is one of the most important tools for managing your day-to-day finances.
+                    And whether you’re looking for rewards and lots of extras or just simple, straight forward,
+                    access to your funds, you can count on Andover Bank for an experience that fits into your life
+                    and tools that put you in charge of your finances - no matter where you are.
+                </p>
+                <p>Click the button to see more details for the new Checking Basic account.</p>
+                <div>
+                    <input type="button" id="btnpersonalId" class="btn btn-default" value="more details">
+                </div>
+            </div>
+        </section>
+        <!-- Section 2 -->
+        <section>
+            <h2>Premium</h2>
+            <div id="basic1" class="jumbotron u-margin-top-small">
+                <h4>Checking Premium</h4>
+                <p>
+                    With straightforward solutions for managing your cash and payments,
+                    Andover Bank combines local expertise, specialized products, and dedicated
+                    services to make cash management a breeze.
+                    While you focus on running your business, we’ll keep your cashflow accessible and easy to manage..
+                </p>
+                <p>Click the button to see more details for a new Business Checking account.</p>
+                <div>
+                    <input type="button" id="btnbusiness" class="btn btn-default" value="more details">
+                </div>
+            </div>
+        </section>
+    </section>
+</div>
+<form id="petitionForm" action="@Url.Action("BankAccountPetition", "Individuals")" method="post">
+    <input id="accTypeId" type="hidden" name="id" />
+    <section class="indent-2">
+        <div id="reveal-business" style="display:none">
+            <div id="basic1" class="jumbotron b">
+                <h2>Checking Premium</h2>
+                <p>
+                    Put your excess funds to work. Tiered interest earning structure and unlimited no-fee
+                    electronic transactions mean you spend less time worrying about bank fees, and more time
+                    focusing on your business. Plus, get 75 free deposits, checks, and withdrawals per
+                    statement cycle ($0.25 each thereafter).
+                </p>
+                @if (Model.IndividualStatus == IndividualStatus.Active)
+                {
+                    <p>Click the button to submit your petition.</p>
+                    @*<input type="submit" class="btn btn-primary" value="Account Petition" />*@
+                    @*<a id="businessId" class="btn btn-primary" href="">Account Petition</a>*@
+                    <a id="btnSubmit1" class="btn btn-primary" value="Account Petition">Submit</a>
+                }
+            </div>
+        </div>
+        <div id="reveal-personal" style="display:none">
+            <div id="basic1" class="jumbotron b">
+                <h3>Checking Basic</h3>
+                <p>
+                    Get your money growing with interest paid on all your balances.
+                    A straightforward checking account that gets your money
+                    working right from dollar one.
+                </p>
+                <ul>
+                    <li>Earns interest on all of your balances monthly</li>
+                    <li>$10 monthly fee waived with $1,500 minimum daily balance</li>
+                    <li>No minimum required to open account</li>
+                    <li>Transfer the Cents</li>
+                    <li>Option of early redemption</li>
+                    <li>Short term deposit</li>
+
+                </ul>
+
+                @if (Model.IndividualStatus == IndividualStatus.Active)
+                {
+                    <p>Click the button to submit your petition.</p>
+                    @*<input type="submit" class="btn btn-primary" value="Account Petition" />*@
+                    @*<a id="personalId" class="btn btn-primary" href="">Account Petition</a>*@
+                    <a id="btnSubmit2" class="btn btn-primary" value="Account Petition">Submit</a>
+                }
+            </div>
+        </div>
+    </section>
+</form>
+
+
+
+
+@section scripts
+{
+    <script>
+        $(document).ready(function () {
+            let accTypeId = $('#accTypeId');
+            let accountTypes = [];
+            let personalAccId, premiumAccId;
+            var viewModel = {};
+
+            $.ajax({
+                url: '/api/bankaccounttypes?description=0',
+                method: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    data.forEach(t => accountTypes.push(t));
+                    personalAccId = accountTypes.find(t => t.id == @BankAccountType.CheckingBasic).id;
+                    premiumAccId = accountTypes.find(t => t.id == @BankAccountType.CheckingPremium).id;
+                }
+            });
+
+            $('#btnSubmit1').click(function (e) {
+                e.preventDefault();
+                viewModel.accountType = 'Checking Premium';
+
+                messageInfo = `Do you really want to make a petition for:<br/>
+                            <label>Bank Account Petition : </label><span>${viewModel.accountType}</span>`;
+
+                titleInfo = "Confirm Petition";
+
+                var dialog = bootbox.dialog({
+                    title: titleInfo,
+                    message: messageInfo,
+                    size: "large",
+                    buttons: {
+                        no: {
+                            label: "No",
+                            className: "btn-default",
+                            callback: function () {
+                                bootbox.hideAll();
+                            }
+                        },
+                        yes: {
+                            label: "Yes",
+                            className: "btn-danger",
+                            callback: function () {
+                                $('#petitionForm').submit();
+                            }
+                        }
+                    }
+                });
+
+            });
+
+            $('#btnSubmit2').click(function (e) {
+                e.preventDefault();
+                viewModel.accountType = 'Checking Basic';
+
+                messageInfo = `Do you really want to make a petition for:<br/>
+                            <label>Bank Account Petition : </label><span>${viewModel.accountType}</span>`;
+
+                titleInfo = "Confirm Petition";
+
+                var dialog = bootbox.dialog({
+                    title: titleInfo,
+                    message: messageInfo,
+                    size: "large",
+                    buttons: {
+                        no: {
+                            label: "No",
+                            className: "btn-default",
+                            callback: function () {
+                                bootbox.hideAll();
+                            }
+                        },
+                        yes: {
+                            label: "Yes",
+                            className: "btn-danger",
+                            callback: function () {
+                                $('#petitionForm').submit();
+                            }
+                        }
+                    }
+                });
+
+            });
+
+            $("#btnbusiness").click(function () {
+                if ($("#reveal-business").is(":visible")) {
+                    $("#reveal-business").hide();
+                    $("#btnbusiness").val("more details");
+                    accTypeId.val('');
+                } else {
+                    $("#btnbusiness").val("close details");
+                    $("#reveal-business").show();
+                    accTypeId.val(premiumAccId);
+                }
+                $("#reveal-personal").hide();
+            });
+            $("#btnpersonalId").click(function () {
+                if ($("#reveal-personal").is(":visible")) {
+                    $("#reveal-personal").hide();
+                    $("#btnpersonalId").val("more details");
+                    accTypeId.val('');
+                } else {
+                    $("#btnpersonalId").val("close details");
+                    $("#reveal-personal").show();
+                    accTypeId.val(personalAccId);
+                }
+                $("#reveal-business").hide();
+            });
+        });
+    </script>
+}

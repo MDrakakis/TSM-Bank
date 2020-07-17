@@ -1,0 +1,22 @@
+﻿@model TSMbank.Models.Individual
+@using TSMbank.ViewModels;
+@using TSMbank.Models;
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Customer Personal Details</h2>
+<h3>@Model.FullName</h3>
+
+<p><label>Fathers Name</label>: @Model.FathersName</p>
+<p><label>Date of Birth</label>: @Model.DateOfBirth</p>
+<p><label>Date Created</label>: @Model.CreatedDate.ToLongDateString()</p>
+<p><label>E-mail</label>: @Model.Email</p>
+<p><label>Identity Card Number</label>: @Model.IdentificationCardNo</p>
+<p><label>Social Security Number</label>: @Model.SSN</p>
+<p><label>Vat Number</label>: @Model.VatNumber</p>
+<p><label>Status</label>: @Model.Status</p>
+<div>
+    @Html.ActionLink("Back", "Index", "Individuals", new { @class = "btn btn-primary" })
+</div>

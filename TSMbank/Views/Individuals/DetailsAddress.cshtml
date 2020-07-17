@@ -1,0 +1,48 @@
+﻿@model TSMbank.Models.Individual
+@using TSMbank.ViewModels;
+@using TSMbank.Models;
+
+@{
+    ViewBag.Title = "DetailsAddress";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>DetailsAddress</h2>
+
+<h3>@Model.FullName</h3>
+<div>
+    <h4>Primary Address</h4>
+    <p><label>Country</label>: @Model.PrimaryAddress.Country</p>
+    <p><label>City</label>: @Model.PrimaryAddress.City</p>
+    <p><label>Region</label>: @Model.PrimaryAddress.Region</p>
+    <p><label>Street</label>: @Model.PrimaryAddress.Street</p>
+    <p><label>Street Number</label>: @Model.PrimaryAddress.StreetNumber</p>
+    <p><label>Postal Code</label>: @Model.PrimaryAddress.PostalCode</p>
+
+
+</div>
+<div>
+    @if (Model.SecondaryAddress != null)
+    {
+        <h4>Secondary Address</h4>
+        <p><label>Country</label>: @Model.SecondaryAddress.Country</p>
+        <p><label>City</label>: @Model.SecondaryAddress.City</p>
+        <p><label>Region</label>: @Model.SecondaryAddress.Region</p>
+        <p><label>Street</label>: @Model.SecondaryAddress.Street</p>
+        <p><label>Street Number</label>: @Model.SecondaryAddress.StreetNumber</p>
+        <p><label>Postal Code</label>: @Model.SecondaryAddress.PostalCode</p>
+    }
+    else
+    {
+        <span>@Html.ActionLink("Add Second Address", "AddSecondAddress", "Individuals", new { @class = "btn btn-primary" })</span>
+    }
+
+</div>
+
+<div>
+    <p>
+        @Html.ActionLink("Back", "Index", "Individuals", new { @class = "btn btn-primary" })       
+        
+    </p>
+</div>
+

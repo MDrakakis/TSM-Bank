@@ -1,0 +1,29 @@
+﻿<!DOCTYPE html>
+@{
+    ViewBag.Title = "Home Page";
+}
+
+<head>
+    <style>
+        body {
+            background-image: url('/Image/Building.jpg');
+            width: 100%;
+            height: auto;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+    </style>
+</head>
+<body>
+    <div class="animated-css">
+        <span class="animated-span-1">Welcome to</span><br />
+        <span class="animated-span-2">TSM Bank</span>
+        <br />
+        @if (!User.Identity.IsAuthenticated)
+        {
+            @Html.ActionLink("Login", "Login", "Account", null, new { @class = "btn btn-primary" })
+            @Html.ActionLink("Register", "Register", "Account", null, new { @class = "btn btn-primary" })
+        }
+
+    </div>
+</body>

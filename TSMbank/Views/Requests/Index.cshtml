@@ -1,0 +1,72 @@
+﻿@model TSMbank.ViewModels.RequestsViewModel
+@using TSMbank.Models
+@{
+    ViewBag.Title = "GetRequests";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>@Model.Status Requests</h2>
+
+@if (!Model.Requests.Any())
+{
+    <p>We dont have any Requests</p>
+}
+else
+{
+    <table id="customers" class="table table-bordered table-hover">
+        <thead>
+            <tr>
+                <th>Request ID</th>
+                <th>Customer Name</th>
+                <th>Request Type</th>
+                <th>Submition Date</th>
+                <th>Status</th>
+                <th>Reject</th>
+                <th>Approve</th>
+
+            </tr>
+        </thead>
+        @foreach (var request in Model.Requests)
+        {
+        <tr>
+            <td>@request.Id</td>
+            <td>@Html.ActionLink(request.Individual.FullName, "Details", "Individuals", new { id = request.Individual.Id }, null)</td>
+            <td>
+                <a href="/requests/@request.Action/@request.Id">@request.TypeInfo()</a>
+                @*@if (request is CardRequest)
+                {
+                    var cardType = ((CardRequest)request).CardType;
+                    <a href="/requests/CardReqDetails/@request.Id">(@cardType)</a>
+                }
+                else if (request is BankAccRequest)
+                {
+                    var info = "";
+                    var bankAccTypeId = ((BankAccRequest)request).BankAccTypeId;
+                    switch (bankAccTypeId)
+                    {
+                        case BankAccountType.CheckingBasic:
+                            info = "Checking Basic";
+                            break;
+                        case BankAccountType.CheckingPremium:
+                            info = "Checking Premium";
+                            break;
+                        case BankAccountType.SavingsBasic:
+                            info = "Savings Basic";
+                            break;
+                        case BankAccountType.SavingsPremium:
+                            info = "Savings Premium";
+                            break;
+                        default:
+                            break;
+                    }
+                    <a href="/requests/BankAccReqDetails/@request.Id">(@info)</a>
+                }*@
+            </td>
+            <td>@request.SubmissionDate</td>
+            <td>@request.Status</td>
+            <td>@Html.ActionLink(" ", "Handle", "Requests", new { Id = request.Id , requestStatus = RequestStatus.Rejected }, new { @class = "glyphicon glyphicon-remove" })</td>
+            <td>@Html.ActionLink(" ", "Handle", "Requests", new { Id = request.Id, requestStatus = RequestStatus.Approved }, new { @class = "glyphicon glyphicon-ok green-ok"})</td>
+        </tr>
+        }
+    </table>
+}

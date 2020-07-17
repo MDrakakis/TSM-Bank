@@ -1,0 +1,40 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - TSM bank</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    
+</head>
+<body>
+    <div>
+        @if (User.IsInRole("Customer") && User.Identity.IsAuthenticated)
+        {
+            @Html.Partial("_navBarCustomer")
+        }
+        else if (User.IsInRole("Administrator"))
+        {
+            @Html.Partial("_navBarAdmin")
+        }
+        else
+        {
+            @Html.Partial("_navBar")
+        }
+
+    </div>
+    <div class="container body-content">
+        @RenderBody()
+        
+        <footer id="footer">
+            <p>&copy; @DateTime.Now.Year - TSM bank for Afdemp</p>
+        </footer>
+    </div>
+
+    @Scripts.Render("~/bundles/lib")
+    @Scripts.Render("~/Scripts/jquery.signalR-2.4.1.min.js")
+    @Scripts.Render("~/signalr/hubs")
+    @RenderSection("scripts", required: false)
+</body>
+</html>
